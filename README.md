@@ -33,6 +33,8 @@ As of now, using this addon, a user can drop his/her **_CSV_** files in the drop
 
 ### Solution working demo
 
+https://github.com/yashUkalkar/Sheets-CSV-importer-stackit-assignment/assets/73520396/5a5f92d4-b4b3-4900-a0c8-f28dec86ec39
+
 ### Approach
 
 After reading the problem statement my first guess at a solution, as a web developer, was to simply use React and whatnot to create a UI where users can authenticate themselves using Google auth and then allow them to select multiple CSV files and do the needful.
