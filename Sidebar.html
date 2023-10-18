@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+    <?!= HtmlService.createHtmlOutputFromFile('SidebarCSS').getContent(); ?>
+  </head>
+
+  <body>
+    <main>
+      <section id="droparea-container">
+        <div>
+          <p>Drag and drop your CSV files below</p>
+
+          <div id="droparea">
+            <div class="csv-icon">
+              <img
+                src="https://static-00.iconduck.com/assets.00/csv-icon-1791x2048-ot22nr8i.png"
+                alt="CSV icon"
+              />
+            </div>
+            <p>Drop your CSV files here!</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="modal" class="hidden">
+      <p>Sorry, some unknown error occurred!</p>
+    </div>
+
+    <?!= HtmlService.createHtmlOutputFromFile('SidebarJS').getContent(); ?>
+  </body>
+</html>

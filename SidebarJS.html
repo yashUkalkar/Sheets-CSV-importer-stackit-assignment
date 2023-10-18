@@ -1,0 +1,96 @@
+<script>
+  document.addEventListener("DOMContentLoaded", initApp);
+
+  function initApp(e) {
+    handleDragDropArea();
+  }
+
+  function handleDragDropArea() {
+    const droparea = document.querySelector("#droparea");
+
+    // Helper functions
+    const prevent = (e) => e.preventDefault();
+    const highlightDropareaBackground = () =>
+      droparea.classList.add("highlight-background");
+    const removeDropareaBackgroundHighlight = () =>
+      droparea.classList.remove("highlight-background");
+
+    // Prevent default actions on drag drop events
+    ["dragenter", "dragover", "drop", "dragleave"].forEach((event) =>
+      droparea.addEventListener(event, prevent)
+    );
+
+    // Styling
+    ["dragenter", "dragover"].forEach((event) =>
+      droparea.addEventListener(event, highlightDropareaBackground)
+    );
+    ["drop", "dragleave"].forEach((event) =>
+      droparea.addEventListener(event, removeDropareaBackgroundHighlight)
+    );
+
+    // Drop event handler
+    droparea.addEventListener("drop", (e) => {
+      try {
+        // Fetch files
+        const files = [...e.dataTransfer.files];
+
+        // Create sheets using files
+        createSheetsFromFiles(files);
+
+        // Show modal showing success
+        showModal("success", "Files imported successfully!");
+      } catch (err) {
+        // Show modal for error
+        showModal("error", "");
+      }
+    });
+  }
+
+  function createSheetsFromFiles(files) {
+    try {
+      files.forEach((file) => {
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+          const fileData = event.target.result;
+          const fileName = file.name;
+
+          google.script.run
+            .withFailureHandler((err) => {
+              console.error("Error: ", err);
+            })
+            .withSuccessHandler((msg) => {
+              console.log(msg);
+            })
+            .generateSheet(fileData, fileName);
+        };
+
+        reader.readAsBinaryString(file);
+      });
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  function showModal(modalType, modalMessage) {
+    const modal = document.querySelector("#modal");
+    const modalPara = document.querySelector("#modal > p");
+
+    // Set message
+    if (modalMessage) {
+      modalPara.innerText = modalMessage;
+    }
+    // Styling
+    const stylingClass =
+      modalType === "error" ? "modal-error" : "modal-success";
+    modal.classList.add(stylingClass);
+
+    // Make modal visible
+    modal.classList.remove("hidden");
+
+    setTimeout(() => {
+      modal.classList.remove(stylingClass);
+      modal.classList.add("hidden");
+    }, 5000);
+  }
+</script>
